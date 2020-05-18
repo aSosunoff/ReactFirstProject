@@ -18,3 +18,11 @@
     -ms-transition: all .2s linear;
     -o-transition: all .2s linear;
 }
+
+.answerItem.success {
+    background-color: rgba(161, 240, 69, .7);
+}
+
+.answerItem.error {
+    background-color: rgba(240, 87, 108, .7);
+}

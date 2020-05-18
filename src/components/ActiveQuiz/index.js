@@ -15,6 +15,10 @@ export default (props) => (
 			</small>
 		</p>
 
-		<AnswersList answers={props.answers} onAnswerClick={props.onAnswerClick} />
+		<AnswersList
+			answerState={props.answerState}
+			answers={props.answers}
+			onAnswerClick={props.onAnswerClick}
+		/>
 	</div>
 );

@@ -2,9 +2,15 @@ import React from "react";
 import classes from "./index.module.css";
 
 export default (props) => {
+    const cls = [classes.answerItem];
+
+    if (props.answerState) {
+        cls.push(classes[props.answerState]);
+    }
+
 	return (
 		<li
-			className={classes.answerItem}
+			className={cls.join(' ')}
 			onClick={() => props.onAnswerClick(props.answer.id)}
 		>
 			{props.answer.text}

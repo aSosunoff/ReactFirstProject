@@ -1,20 +1,21 @@
 import React from "react";
 import classes from "./index.module.css";
-import AnswersList from './AnswersList';
+import AnswersList from "./AnswersList";
 
-export default props => (
-    <div className={classes.activeQiuz}>
-        <p className={classes.question}>
-            <span>
-                <strong>2.</strong>&nbsp;
-                Как дела
-            </span>
+export default (props) => (
+	<div className={classes.activeQiuz}>
+		<p className={classes.question}>
+			<span>
+				<strong>2.</strong>&nbsp;
+				{props.question}
+			</span>
 
-            <small>4 из 12</small>
-        </p>
+			<small>4 из 12</small>
+		</p>
 
-        <AnswersList
-            answers={ props.answers }
-        />
-    </div>
+        <AnswersList 
+            answers={props.answers}
+            onAnswerClick={props.onAnswerClick}
+            />
+	</div>
 );

@@ -9,6 +9,7 @@ export default props => (
                 <AnswersItem
                     key={inx}
                     answer={answer}
+                    onAnswerClick={props.onAnswerClick}
                 />
             )
         }) }

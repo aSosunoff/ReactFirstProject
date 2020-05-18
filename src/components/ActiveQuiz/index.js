@@ -1,7 +1,8 @@
 import React from "react";
 import classes from "./index.module.css";
+import AnswersList from './AnswersList';
 
-export default (props) => (
+export default props => (
     <div className={classes.activeQiuz}>
         <p className={classes.question}>
             <span>
@@ -9,14 +10,11 @@ export default (props) => (
                 Как дела
             </span>
 
-            <smal>4 из 12</smal>
+            <small>4 из 12</small>
         </p>
 
-        <ul>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-        </ul>
+        <AnswersList
+            answers={ props.answers }
+        />
     </div>
 );

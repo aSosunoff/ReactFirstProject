@@ -6,7 +6,7 @@ export default (props) => (
 	<div className={classes.activeQiuz}>
 		<p className={classes.question}>
 			<span>
-				<strong>2.</strong>&nbsp;
+				<strong>{props.answerNumber}.</strong>&nbsp;
 				{props.question}
 			</span>
 

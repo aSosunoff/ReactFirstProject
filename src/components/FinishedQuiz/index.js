@@ -1,27 +1,39 @@
-import React from 'react';
-import classes from './index.module.css';
+import React from "react";
+import classes from "./index.module.css";
 
 export default (props) => {
-    return (
-        <div className={classes.finishedQuiz}>
-            <ul>
-                <li>
-                    <strong>1.</strong>
-                    123
-                    <i className={'fa fa-times ' + classes.error}/>
-                </li>
-                <li>
-                    <strong>1.</strong>
-                    123
-                    <i className={'fa fa-check ' + classes.success}/>
-                </li>
-            </ul>
+	const successCount = Object.keys(props.results).reduce((total, key) => {
+		if (props.results[key] === "success") {
+			total++;
+        }
+        return total;
+    }, 0);
+    
+	return (
+		<div className={classes.finishedQuiz}>
+			<ul>
+				{props.quiz.map(({ id, question }, inx) => {
+					const cls = [
+						"fa",
+						props.results[id] === "error" ? "fa-times" : "fa-check",
+						classes[props.results[id]],
+					];
 
-            <p>Правильно 4 из 10</p>
+					return (
+						<li keu={inx}>
+							<strong>{inx + 1}</strong>&nbsp;
+							{question}
+							<i className={cls.join(" ")} />
+						</li>
+					);
+				})}
+			</ul>
 
-            <div>
-                <button>Повторить</button>
-            </div>
-        </div>
-    ) 
+			<p>Правильно {successCount} из {props.quiz.length}</p>
+
+			<div>
+				<button onClick={props.onRetry}>Повторить</button>
+			</div>
+		</div>
+	);
 };

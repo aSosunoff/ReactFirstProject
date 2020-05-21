@@ -37,40 +37,20 @@ export default class extends React.Component {
 
 	onAnswerClickHandler = (answerId) => {
 		if (this.state.answerState) {
-			const key = Object.keys(this.state.answerState)[0];
-			if (this.state.answerState[key] === "success") {
-				return;
-			}
+			return;
 		}
 
 		const question = this.state.quiz[this.state.activeQuestion];
 		const results = this.state.results;
 
 		if (question.rightAnswerId === answerId) {
-			if (!results[question.id]) {
-				results[question.id] = "success";
-			}
-
+			results[question.id] = "success";
 			this.setState({
 				answerState: {
 					[answerId]: "success",
 					results,
 				},
 			});
-
-			const timeout = setTimeout(() => {
-				if (this.isQuizFinished()) {
-					this.setState({
-						isFinished: true,
-					});
-				} else {
-					this.setState({
-						activeQuestion: this.state.activeQuestion + 1,
-						answerState: null,
-					});
-				}
-				clearTimeout(timeout);
-			}, 1000);
 		} else {
 			results[question.id] = "error";
 			this.setState({
@@ -80,6 +60,20 @@ export default class extends React.Component {
 				},
 			});
 		}
+
+		const timeout = setTimeout(() => {
+			if (this.isQuizFinished()) {
+				this.setState({
+					isFinished: true,
+				});
+			} else {
+				this.setState({
+					activeQuestion: this.state.activeQuestion + 1,
+					answerState: null,
+				});
+			}
+			clearTimeout(timeout);
+		}, 1000);
 	};
 
 	isQuizFinished() {

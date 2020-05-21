@@ -5,7 +5,6 @@
     bottom: 0;
     width: 80%;
     max-width: 300px;
-    padding: 20px 10px;
     box-sizing: border-box;
     background-color: #fff;
     transform: translateX(0px);
@@ -45,14 +44,19 @@
     text-decoration: none;
     background-color: #fff;
     position: relative;
-    padding: 0 20px 10px 20px;
+    padding: 5px 20px;
     transition: all .3s;
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
     -ms-transition: all .3s;
     -o-transition: all .3s;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .drawer ul li a:hover, .active {
     opacity: .7;
+    background-color: rgb(33, 65, 209);
+    color: #fff;
 }

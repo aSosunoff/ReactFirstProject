@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./index.module.css";
+import Backdrop from "../../UI/Backdrop";
 
 const links = [1, 2, 3];
 
@@ -22,9 +23,12 @@ export default class extends React.Component {
 		}
 
 		return (
-			<nav className={cls.join(" ")}>
-				<ul>{this.renderLinks()}</ul>
-			</nav>
+			<>
+				{this.props.isOpen ? <Backdrop onClick={this.props.onCloce} /> : null}
+				<nav className={cls.join(" ")}>
+					<ul>{this.renderLinks()}</ul>
+				</nav>
+			</>
 		);
 	}
 }

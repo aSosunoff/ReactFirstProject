@@ -14,10 +14,19 @@ export default class extends React.Component {
 		});
 	};
 
+	menuClose = () => {
+		this.setState({
+			isOpenMenu: false,
+		});
+	};
+
 	render() {
 		return (
 			<div className={classes.layout}>
-				<Drawer isOpen={this.state.isOpenMenu} />
+				<Drawer
+					isOpen={this.state.isOpenMenu}
+					onCloce={this.menuClose}
+				/>
 				<MenuToggle
 					isOpen={this.state.isOpenMenu}
 					onToggle={this.toggleMenuHandler}

@@ -35,6 +35,10 @@ export default class extends React.Component {
 		],
 	};
 
+	componentDidMount() {
+		console.log(this.props);
+	}
+
 	onAnswerClickHandler = (answerId) => {
 		if (this.state.answerState) {
 			return;

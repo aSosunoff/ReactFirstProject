@@ -2,15 +2,39 @@ import React from "react";
 import classes from "./index.module.css";
 import MenuToggle from "../MenuToggle";
 import Backdrop from "../../UI/Backdrop";
+import { NavLink } from "react-router-dom";
 
-const links = [1, 2, 3];
+const links = [
+	{
+		to: "/",
+		label: "Список",
+		exact: true,
+	},
+	{
+		to: "/auth",
+		label: "Авторизация",
+		exact: false,
+	},
+	{
+		to: "/quiz-creator",
+		label: "Создать тест",
+		exact: false,
+	},
+];
 
 export default class extends React.Component {
 	renderLinks() {
-		return links.map((link, inx) => {
+		return links.map(({ to, exact, label }, inx) => {
 			return (
 				<li key={inx}>
-					<a href="#">{link}</a>
+					<NavLink
+						to={to}
+						exact={exact}
+						activeClassName={classes.active}
+						onClick={this.props.onClose}
+					>
+						{label}
+					</NavLink>
 				</li>
 			);
 		});
@@ -26,11 +50,8 @@ export default class extends React.Component {
 		return (
 			<>
 				{this.props.isOpen ? <Backdrop onClick={this.props.onClose} /> : null}
-				
-				<MenuToggle
-					isOpen={this.props.isOpen}
-					onToggle={this.props.onToggle}
-				/>
+
+				<MenuToggle isOpen={this.props.isOpen} onToggle={this.props.onToggle} />
 
 				<nav className={cls.join(" ")}>
 					<ul>{this.renderLinks()}</ul>

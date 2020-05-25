@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./index.module.css";
 import Button from "../../components/UI/Button/";
 import Input from "../../components/UI/Input/";
+import is from 'is_js';
 
 export default class extends React.Component {
 	state = {
@@ -41,9 +42,39 @@ export default class extends React.Component {
 		event.preventDafault();
 	};
 
+	validateControl(value, validation) {
+		if(!validation){
+			return true;
+		}
+
+		let isValid = true;
+
+		if(validation.required) {
+			isValid = value.trim() !== '' && isValid;
+		}
+
+		if(validation.email) {
+			isValid = is.email(value) && isValid;
+		}
+
+		if(validation.minLength) {
+			isValid = value.trim().length >= validation.minLength && isValid;
+		}
+
+		return isValid;
+	}
+
 	onChangeHandler = (event, controlName) => {
 		console.log(controlName, event.target.value);
-	}
+
+		const control = { ...this.state.formConstrols[controlName] };
+		control.value = event.target.value;
+		control.touched = true;
+		control.valid = this.validateControl(control.value, control.validation);
+		this.setState({
+			formConstrols: { ...this.state.formConstrols, [controlName]: control },
+		});
+	};
 
 	renderInputs() {
 		return Object.entries(this.state.formConstrols).map(

@@ -7,7 +7,7 @@ import is from "is_js";
 export default class extends React.Component {
 	state = {
 		isFormValid: false,
-		formConstrols: {
+		formControls: {
 			email: {
 				value: "",
 				type: "email",
@@ -66,16 +66,16 @@ export default class extends React.Component {
 	}
 
 	onChangeHandler = (event, controlName) => {
-		const control = { ...this.state.formConstrols[controlName] };
+		const control = { ...this.state.formControls[controlName] };
 		control.value = event.target.value;
 		control.touched = true;
 		control.valid = this.validateControl(control.value, control.validation);
-		const formConstrols = {
-			...this.state.formConstrols,
+		const formControls = {
+			...this.state.formControls,
 			[controlName]: control,
 		};
 
-		const isFormValid = Object.entries(formConstrols).reduce(
+		const isFormValid = Object.entries(formControls).reduce(
 			(res, [, { valid }]) => {
 				return valid && res;
 			},
@@ -83,13 +83,13 @@ export default class extends React.Component {
 		);
 
 		this.setState({
-			formConstrols,
+			formControls,
 			isFormValid,
 		});
 	};
 
 	renderInputs() {
-		return Object.entries(this.state.formConstrols).map(
+		return Object.entries(this.state.formControls).map(
 			(
 				[
 					controlName,

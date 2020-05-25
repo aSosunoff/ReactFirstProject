@@ -2,10 +2,11 @@ import React from "react";
 import classes from "./index.module.css";
 import Button from "../../components/UI/Button/";
 import Input from "../../components/UI/Input/";
-import is from 'is_js';
+import is from "is_js";
 
 export default class extends React.Component {
 	state = {
+		isFormValid: false,
 		formConstrols: {
 			email: {
 				value: "",
@@ -43,21 +44,21 @@ export default class extends React.Component {
 	};
 
 	validateControl(value, validation) {
-		if(!validation){
+		if (!validation) {
 			return true;
 		}
 
 		let isValid = true;
 
-		if(validation.required) {
-			isValid = value.trim() !== '' && isValid;
+		if (validation.required) {
+			isValid = value.trim() !== "" && isValid;
 		}
 
-		if(validation.email) {
+		if (validation.email) {
 			isValid = is.email(value) && isValid;
 		}
 
-		if(validation.minLength) {
+		if (validation.minLength) {
 			isValid = value.trim().length >= validation.minLength && isValid;
 		}
 
@@ -65,14 +66,25 @@ export default class extends React.Component {
 	}
 
 	onChangeHandler = (event, controlName) => {
-		console.log(controlName, event.target.value);
-
 		const control = { ...this.state.formConstrols[controlName] };
 		control.value = event.target.value;
 		control.touched = true;
 		control.valid = this.validateControl(control.value, control.validation);
+		const formConstrols = {
+			...this.state.formConstrols,
+			[controlName]: control,
+		};
+
+		const isFormValid = Object.entries(formConstrols).reduce(
+			(res, [, { valid }]) => {
+				return valid && res;
+			},
+			true
+		);
+
 		this.setState({
-			formConstrols: { ...this.state.formConstrols, [controlName]: control },
+			formConstrols,
+			isFormValid,
 		});
 	};
 
@@ -111,10 +123,18 @@ export default class extends React.Component {
 					<form onSubmit={this.submitHandler} className={classes.authForm}>
 						{this.renderInputs()}
 
-						<Button type="success" onClick={this.loginHandler}>
+						<Button
+							type="success"
+							onClick={this.loginHandler}
+							disabled={!this.state.isFormValid}
+						>
 							Войти
 						</Button>
-						<Button type="primary" onClick={this.registerHandler}>
+						<Button
+							type="primary"
+							onClick={this.registerHandler}
+							disabled={!this.state.isFormValid}
+						>
 							Зарегистрироваться
 						</Button>
 					</form>

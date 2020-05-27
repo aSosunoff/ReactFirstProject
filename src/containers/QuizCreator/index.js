@@ -1,7 +1,11 @@
 import React from "react";
 import classes from "./index.module.css";
 import Button from "../../components/UI/Button/";
-import { createControl, validateControl, validateForm } from "../../form/formFramework";
+import {
+	createControl,
+	validateControl,
+	validateForm,
+} from "../../form/formFramework";
 import Input from "../../components/UI/Input/";
 import Select from "../../components/UI/Select/";
 
@@ -43,6 +47,38 @@ export default class extends React.Component {
 
 	addQuestionHandler = (event) => {
 		event.preventDefault();
+
+		const quiz = [ ...this.state.quiz ];
+		const index = quiz.length + 1;
+
+		const {
+			question,
+			option1,
+			option2,
+			option3,
+			option4,
+		} = this.state.formControls;
+
+		const questionItem = {
+			question: question.value,
+			id: index,
+			rightAnswerId: this.state.rightAnswerId,
+			answers: [
+				{ text: option1.value, value: option1.id },
+				{ text: option2.value, value: option2.id },
+				{ text: option3.value, value: option3.id },
+				{ text: option4.value, value: option4.id },
+			],
+		};
+
+		quiz.push(questionItem);
+
+		this.setState({
+			quiz,
+			rightAnswerId: 1,
+			isFormValid: false,
+			formControls: createFormControls(),
+		});
 	};
 
 	createQuizHandler = (event) => {
@@ -121,10 +157,18 @@ export default class extends React.Component {
 							]}
 						/>
 
-						<Button type="primary" onClick={this.addQuestionHandler} disabled={!this.state.isFormValid}>
+						<Button
+							type="primary"
+							onClick={this.addQuestionHandler}
+							disabled={!this.state.isFormValid}
+						>
 							Добавить вопрос
 						</Button>
-						<Button type="success" onClick={this.createQuizHandler} disabled={this.state.quiz.length === 0}>
+						<Button
+							type="success"
+							onClick={this.createQuizHandler}
+							disabled={this.state.quiz.length === 0}
+						>
 							Создать тест
 						</Button>
 					</form>

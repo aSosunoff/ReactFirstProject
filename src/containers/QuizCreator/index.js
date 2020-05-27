@@ -3,8 +3,8 @@ import classes from "./index.module.css";
 import Button from "../../components/UI/Button/";
 import {
 	createControl,
-	validateControl,
 	validateForm,
+	setControl,
 } from "../../form/formFramework";
 import Input from "../../components/UI/Input/";
 import Select from "../../components/UI/Select/";
@@ -48,7 +48,7 @@ export default class extends React.Component {
 	addQuestionHandler = (event) => {
 		event.preventDefault();
 
-		const quiz = [ ...this.state.quiz ];
+		const quiz = [...this.state.quiz];
 		const index = quiz.length + 1;
 
 		const {
@@ -86,13 +86,11 @@ export default class extends React.Component {
 	};
 
 	onChangeHandler = (value, controlName) => {
-		const control = { ...this.state.formControls[controlName] };
-		control.value = value;
-		control.touched = true;
-		control.valid = validateControl(control.value, control.validation);
 		const formControls = {
 			...this.state.formControls,
-			[controlName]: control,
+			[controlName]: setControl(value, {
+				...this.state.formControls[controlName],
+			}),
 		};
 		this.setState({
 			formControls,

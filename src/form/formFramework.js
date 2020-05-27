@@ -37,3 +37,10 @@ export const validateForm = (formControls) => {
 		return valid && res;
 	}, true);
 };
+
+export const setControl = (value, control) => {
+	control.value = value;
+	control.touched = true;
+	control.valid = validateControl(control.value, control.validation);
+	return control;
+};

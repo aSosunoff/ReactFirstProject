@@ -2,36 +2,38 @@ import React from "react";
 import classes from "./index.module.css";
 import Button from "../../components/UI/Button/";
 import Input from "../../components/UI/Input/";
-import is from "is_js";
+import {
+	createControl,
+	validateForm,
+	setControl,
+} from "../../form/formFramework";
 
 export default class extends React.Component {
 	state = {
 		isFormValid: false,
 		formControls: {
-			email: {
-				value: "",
-				type: "email",
-				label: "Email",
-				errorMessage: "Введите корректный email",
-				valid: false,
-				touched: false,
-				validation: {
+			email: createControl(
+				{
+					type: "email",
+					label: "Email",
+					errorMessage: "Введите корректный email",
+				},
+				{
 					required: true,
 					email: true,
+				}
+			),
+			password: createControl(
+				{
+					type: "password",
+					label: "Пароль",
+					errorMessage: "Введите корректный пароль",
 				},
-			},
-			password: {
-				value: "",
-				type: "password",
-				label: "Пароль",
-				errorMessage: "Введите корректный пароль",
-				valid: false,
-				touched: false,
-				validation: {
+				{
 					required: true,
 					minLength: 6,
-				},
-			},
+				}
+			),
 		},
 	};
 
@@ -43,48 +45,16 @@ export default class extends React.Component {
 		event.preventDafault();
 	};
 
-	validateControl(value, validation) {
-		if (!validation) {
-			return true;
-		}
-
-		let isValid = true;
-
-		if (validation.required) {
-			isValid = value.trim() !== "" && isValid;
-		}
-
-		if (validation.email) {
-			isValid = is.email(value) && isValid;
-		}
-
-		if (validation.minLength) {
-			isValid = value.trim().length >= validation.minLength && isValid;
-		}
-
-		return isValid;
-	}
-
-	onChangeHandler = (event, controlName) => {
-		const control = { ...this.state.formControls[controlName] };
-		control.value = event.target.value;
-		control.touched = true;
-		control.valid = this.validateControl(control.value, control.validation);
+	onChangeHandler = (value, controlName) => {
 		const formControls = {
 			...this.state.formControls,
-			[controlName]: control,
+			[controlName]: setControl(value, {
+				...this.state.formControls[controlName],
+			}),
 		};
-
-		const isFormValid = Object.entries(formControls).reduce(
-			(res, [, { valid }]) => {
-				return valid && res;
-			},
-			true
-		);
-
 		this.setState({
 			formControls,
-			isFormValid,
+			isFormValid: validateForm(formControls),
 		});
 	};
 
@@ -107,7 +77,9 @@ export default class extends React.Component {
 						valid={valid}
 						touched={touched}
 						shouldValidate={Boolean(validation)}
-						onChange={(event) => this.onChangeHandler(event, controlName)}
+						onChange={(event) =>
+							this.onChangeHandler(event.target.value, controlName)
+						}
 					/>
 				);
 			}

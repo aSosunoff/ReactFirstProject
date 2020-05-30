@@ -4,6 +4,13 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import axios from 'axios/dist/axios';
+
+window.axiosTransport = axios.create({
+	baseURL: 'http://localhost:2222/api/',
+	timeout: 4000,
+	withCredentials: true,
+});
 
 const app = (
 	<BrowserRouter>

@@ -83,6 +83,10 @@ export default class extends React.Component {
 
 	createQuizHandler = (event) => {
 		event.preventDefault();
+		console.log(this.state.quiz);
+		window.axiosTransport.post("quiz/create", {
+			quiz: this.state.quiz,
+		});
 	};
 
 	onChangeHandler = (value, controlName) => {

@@ -81,12 +81,15 @@ export default class extends React.Component {
 		});
 	};
 
-	createQuizHandler = (event) => {
+	createQuizHandler = async (event) => {
 		event.preventDefault();
-		console.log(this.state.quiz);
-		window.axiosTransport.post("quiz/create", {
-			quiz: this.state.quiz,
-		});
+		try {
+			await window.axiosTransport.post("quiz/create", {
+				quiz: this.state.quiz,
+			});
+		} catch (e) {
+			console.log(e.response.data);
+		}
 	};
 
 	onChangeHandler = (value, controlName) => {

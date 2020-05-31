@@ -85,7 +85,14 @@ export default class extends React.Component {
 		event.preventDefault();
 		try {
 			await window.axiosTransport.post("quiz/create", {
-				quiz: this.state.quiz,
+				quizes: this.state.quiz,
+			});
+
+			this.setState({
+				quiz: [],
+				rightAnswerId: 1,
+				isFormValid: false,
+				formControls: createFormControls(),
 			});
 		} catch (e) {
 			console.log(e.response.data);

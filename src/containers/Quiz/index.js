@@ -36,8 +36,11 @@ export default class extends React.Component {
 		], */
 	};
 
-	componentDidMount() {
-		console.log(this.props.match.params.id);
+	async componentDidMount() {
+		const { data: { quizes: quiz } } = await window.axiosTransport.get(`quiz/item/${this.props.match.params.id}`);
+		this.setState({
+			quiz
+		});
 	}
 
 	onAnswerClickHandler = (answerId) => {
@@ -49,7 +52,7 @@ export default class extends React.Component {
 		const results = this.state.results;
 
 		if (question.rightAnswerId === answerId) {
-			results[question.id] = "success";
+			results[question._id] = "success";
 			this.setState({
 				answerState: {
 					[answerId]: "success",
@@ -57,7 +60,7 @@ export default class extends React.Component {
 				},
 			});
 		} else {
-			results[question.id] = "error";
+			results[question._id] = "error";
 			this.setState({
 				answerState: {
 					[answerId]: "error",

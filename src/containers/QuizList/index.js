@@ -15,10 +15,10 @@ export default class extends React.Component {
 	}
 
 	renderQuizes() {
-		return this.state.quizes.map(({_id, question}, inx) => {
+		return this.state.quizes.map(({ _id }, inx) => {
 			return (
 				<li key={inx}>
-					<NavLink to={`/quiz/${_id}`}>{question}</NavLink>
+					<NavLink to={`/quiz/${_id}`}>Тест № {inx + 1}</NavLink>
 				</li>
 			);
 		});

@@ -14,11 +14,11 @@ export default (props) => {
 	return (
 		<div className={classes.finishedQuiz}>
 			<ul>
-				{props.quiz.map(({ id, question }, inx) => {
+				{props.quiz.map(({ _id, question }, inx) => {
 					const cls = [
 						"fa",
-						props.results[id] === "error" ? "fa-times" : "fa-check",
-						classes[props.results[id]],
+						props.results[_id] === "error" ? "fa-times" : "fa-check",
+						classes[props.results[_id]],
 					];
 
 					return (

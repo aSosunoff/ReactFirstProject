@@ -11,7 +11,7 @@ export default (props) => {
 	return (
 		<li
 			className={cls.join(' ')}
-			onClick={() => props.onAnswerClick(props.answer.id)}
+			onClick={() => props.onAnswerClick(props.answer.value)}
 		>
 			{props.answer.text}
 		</li>

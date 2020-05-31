@@ -3,11 +3,22 @@ import classes from "./index.module.css";
 import { NavLink } from "react-router-dom";
 
 export default class extends React.Component {
+	state = {
+		quizes: [],
+	};
+
+	async componentDidMount() {
+		const { data: list } = await window.axiosTransport.get("quiz/list");
+		this.setState({
+			quizes: list,
+		});
+	}
+
 	renderQuizes() {
-		return [1, 2, 3].map((quiz, inx) => {
+		return this.state.quizes.map(({_id, question}, inx) => {
 			return (
 				<li key={inx}>
-					<NavLink to={`/quiz/${quiz}`}>Тест {quiz}</NavLink>
+					<NavLink to={`/quiz/${_id}`}>{question}</NavLink>
 				</li>
 			);
 		});
@@ -17,7 +28,7 @@ export default class extends React.Component {
 		return (
 			<div className={classes.quizList}>
 				<h1>Список тестов</h1>
-				
+
 				<ul>{this.renderQuizes()}</ul>
 			</div>
 		);

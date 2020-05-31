@@ -9,7 +9,8 @@ export default class extends React.Component {
 		isFinished: false,
 		activeQuestion: 0,
 		answerState: null, // [id]: success | error
-		quiz: [
+		quiz: [],
+		/* quiz: [
 			{
 				id: 1,
 				question: "Какого цвета небо?",
@@ -32,11 +33,11 @@ export default class extends React.Component {
 					{ id: 4, text: "1803" },
 				],
 			},
-		],
+		], */
 	};
 
 	componentDidMount() {
-		console.log(this.props);
+		console.log(this.props.match.params.id);
 	}
 
 	onAnswerClickHandler = (answerId) => {
@@ -97,8 +98,6 @@ export default class extends React.Component {
 		return (
 			<div className={classes.quiz}>
 				<div className={classes.quizWrapper}>
-					<h1>Ответьте на все вопросы</h1>
-
 					{this.state.isFinished ? (
 						<FinishedQuiz
 							results={this.state.results}
@@ -107,8 +106,7 @@ export default class extends React.Component {
 						/>
 					) : (
 						<ActiveQuiz
-							answers={this.state.quiz[this.state.activeQuestion].answers}
-							question={this.state.quiz[this.state.activeQuestion].question}
+							quiz={this.state.quiz[this.state.activeQuestion]}
 							onAnswerClick={this.onAnswerClickHandler}
 							quizLength={this.state.quiz.length}
 							answerNumber={this.state.activeQuestion + 1}

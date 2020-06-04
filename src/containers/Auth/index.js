@@ -7,43 +7,85 @@ import {
 	validateForm,
 	setControl,
 } from "../../form/formFramework";
+import axios from "../../utils/axios";
+import Loader from "../../components/UI/loader";
+
+const createFormControls = () => ({
+	email: createControl(
+		{
+			type: "email",
+			label: "Email",
+			errorMessage: "Введите корректный email",
+		},
+		{
+			required: true,
+			email: true,
+		}
+	),
+	password: createControl(
+		{
+			type: "password",
+			label: "Пароль",
+			errorMessage: "Введите корректный пароль",
+		},
+		{
+			required: true,
+			minLength: 6,
+		}
+	),
+});
 
 export default class extends React.Component {
 	state = {
 		isFormValid: false,
-		formControls: {
-			email: createControl(
-				{
-					type: "email",
-					label: "Email",
-					errorMessage: "Введите корректный email",
-				},
-				{
-					required: true,
-					email: true,
-				}
-			),
-			password: createControl(
-				{
-					type: "password",
-					label: "Пароль",
-					errorMessage: "Введите корректный пароль",
-				},
-				{
-					required: true,
-					minLength: 6,
-				}
-			),
-		},
+		loading: false,
+		formControls: createFormControls(),
 	};
 
-	loginHandler = () => {};
+	loginHandler = async () => {
+		try {
+			this.setState({ loading: true });
 
-	registerHandler = () => {};
+			await axios.post("/auth/login", {
+				email: this.state.formControls.email.value,
+				password: this.state.formControls.password.value,
+			});
 
-	submitHandler = (event) => {
+			this.setState({
+				isFormValid: false,
+				loading: false,
+				formControls: createFormControls(),
+			});
+		} catch (e) {
+			console.log(e.response.data);
+			this.setState({ loading: false });
+		}
+	};
+
+	registerHandler = async () => {
+		try {
+			this.setState({
+				loading: true,
+			});
+
+			await axios.post("/auth/register", {
+				email: this.state.formControls.email.value,
+				password: this.state.formControls.password.value,
+			});
+
+			this.setState({
+				isFormValid: false,
+				loading: false,
+				formControls: createFormControls(),
+			});
+		} catch (e) {
+			console.log(e.response.data);
+		}
+	};
+
+	/* submitHandler = (event) => {
 		event.preventDafault();
-	};
+	}; */
 
 	onChangeHandler = (value, controlName) => {
 		const formControls = {
@@ -91,25 +133,28 @@ export default class extends React.Component {
 			<div className={classes.auth}>
 				<div>
 					<h1>Авторизация</h1>
+					{this.state.loading ? (
+						<Loader />
+					) : (
+						<div className={classes.authForm}>
+							{this.renderInputs()}
 
-					<form onSubmit={this.submitHandler} className={classes.authForm}>
-						{this.renderInputs()}
-
-						<Button
-							type="success"
-							onClick={this.loginHandler}
-							disabled={!this.state.isFormValid}
-						>
-							Войти
-						</Button>
-						<Button
-							type="primary"
-							onClick={this.registerHandler}
-							disabled={!this.state.isFormValid}
-						>
-							Зарегистрироваться
-						</Button>
-					</form>
+							<Button
+								type="success"
+								onClick={this.loginHandler}
+								disabled={!this.state.isFormValid}
+							>
+								Войти
+							</Button>
+							<Button
+								type="primary"
+								onClick={this.registerHandler}
+								disabled={!this.state.isFormValid}
+							>
+								Зарегистрироваться
+							</Button>
+						</div>
+					)}
 				</div>
 			</div>
 		);

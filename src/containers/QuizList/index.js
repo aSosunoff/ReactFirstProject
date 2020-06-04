@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./index.module.css";
 import { NavLink } from "react-router-dom";
 import Loader from "../../components/UI/loader/";
+import axios from '../../utils/axios';
 
 export default class extends React.Component {
 	state = {
@@ -10,7 +11,7 @@ export default class extends React.Component {
 	};
 
 	async componentDidMount() {
-		const { data: list } = await window.axiosTransport.get("quiz/list");
+		const { data: list } = await axios.get("quiz/list");
 		this.setState({
 			quizes: list,
 			loading: false,

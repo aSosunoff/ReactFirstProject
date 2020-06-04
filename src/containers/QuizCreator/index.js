@@ -8,6 +8,7 @@ import {
 } from "../../form/formFramework";
 import Input from "../../components/UI/Input/";
 import Select from "../../components/UI/Select/";
+import axios from '../../utils/axios';
 
 const createOptionControl = (number) =>
 	createControl(
@@ -84,7 +85,7 @@ export default class extends React.Component {
 	createQuizHandler = async (event) => {
 		event.preventDefault();
 		try {
-			await window.axiosTransport.post("quiz/create", {
+			await axios.post("quiz/create", {
 				quizes: this.state.quiz,
 			});
 

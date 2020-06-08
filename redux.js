@@ -42,7 +42,5 @@ store.subscribe(() => {
 });
 
 store.dispatch(addCounter);
-
 store.dispatch(subCounter);
-
 store.dispatch(addNumber);

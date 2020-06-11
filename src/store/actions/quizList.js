@@ -1,18 +1,16 @@
 import axios from "../../utils/axios";
 import {
-	QUIZE_START,
-	QUIZE_SUCCESS,
-	QUIZE_ERROR,
+	QUIZE_LIST_START,
+	QUIZE_LIST_SUCCESS,
+	QUIZE_LIST_ERROR,
 } from "./actionsTypes";
 
-export const getQuizById = (id) => {
+export const loadQuizes = () => {
 	return async (dispatch) => {
 		try {
 			dispatch(Start());
-			const {
-				data: { quizes: quiz },
-			} = await axios.get(`quiz/item/${id}`);
-			dispatch(Success(quiz));
+			const { data: list } = await axios.get("quiz/list");
+			dispatch(Success(list));
 		} catch (error) {
 			dispatch(Error(error));
 		}
@@ -21,20 +19,20 @@ export const getQuizById = (id) => {
 
 export const Start = () => {
 	return {
-		type: QUIZE_START,
+		type: QUIZE_LIST_START,
 	};
 };
 
-export const Success = (quiz) => {
+export const Success = (list) => {
 	return {
-		type: QUIZE_SUCCESS,
-		quiz,
+		type: QUIZE_LIST_SUCCESS,
+		list,
 	};
 };
 
 export const Error = (error) => {
 	return {
-		type: QUIZE_ERROR,
+		type: QUIZE_LIST_ERROR,
 		error,
 	};
 };

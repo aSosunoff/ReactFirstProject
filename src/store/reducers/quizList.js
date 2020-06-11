@@ -1,33 +1,29 @@
 import {
-	QUIZE_SUCCESS,
-	QUIZE_START,
-	QUIZE_ERROR,
+	QUIZE_LIST_START,
+	QUIZE_LIST_SUCCESS,
+	QUIZE_LIST_ERROR,
 } from "../actions/actionsTypes";
 
 const initialState = {
-	results: {}, // [id]: success | error
-	isFinished: false,
-	activeQuestion: 0,
-	answerState: null, // [id]: success | error
-	quiz: [],
+	quizes: [],
 	loading: false,
+	error: null,
 };
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case QUIZE_START:
+		case QUIZE_LIST_START:
 			return {
 				...state,
 				loading: true,
 			};
-		case QUIZE_SUCCESS:
+		case QUIZE_LIST_SUCCESS:
 			return {
 				...state,
-				quiz: action.quiz,
+				quizes: action.list,
 				loading: false,
 			};
-
-		case QUIZE_ERROR:
+		case QUIZE_LIST_ERROR:
 			return {
 				...state,
 				error: action.error,

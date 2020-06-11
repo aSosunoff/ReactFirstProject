@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { NavLink } from "react-router-dom";
 import classes from "./index.module.css";
 import Loader from "../../components/UI/loader/";
-import { loadQuizes } from '../../store/actions/quiz';
+import { loadQuizes } from '../../store/actions/quizList';
 
 class QuizList extends React.Component {
 	componentDidMount() {
@@ -33,8 +33,8 @@ class QuizList extends React.Component {
 
 const mapStateToProps = state => {
 	return {
-		quizes: state.quiz.quizes,
-		loading: state.quiz.loading,
+		quizes: state.quizList.quizes,
+		loading: state.quizList.loading,
 	};
 }
 

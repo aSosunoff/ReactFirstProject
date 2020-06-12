@@ -10,9 +10,8 @@ import {
 export const QuizCreate = () => {
 	return async (dispatch, getStore) => {
 		try {
-			const store = getStore().quizCreator;
 			await axios.post("quiz/create", {
-				quizes: store.quiz,
+				quizes: getStore().quizCreator.quiz,
 			});
 			dispatch(Reset());
 		} catch (error) {
@@ -53,9 +52,6 @@ export const AddQuestion = () => {
 	return (dispatch, getStore) => {
 		const store = getStore().quizCreator;
 
-		const quiz = [...store.quiz];
-		const index = quiz.length + 1;
-
 		const {
 			question,
 			option1,
@@ -66,7 +62,7 @@ export const AddQuestion = () => {
 
 		const questionItem = {
 			question: question.value,
-			id: index,
+			id: store.quiz.length + 1,
 			rightAnswerId: store.rightAnswerId,
 			answers: [
 				{ text: option1.value, value: option1.id },
@@ -76,13 +72,11 @@ export const AddQuestion = () => {
 			],
 		};
 
-		quiz.push(questionItem);
-
 		dispatch(Reset());
 
 		dispatch({
 			type: QUIZE_CREATOR_ADD_QUESTION,
-			quiz,
+			quiz: [...store.quiz, questionItem],
 		});
 	};
 };

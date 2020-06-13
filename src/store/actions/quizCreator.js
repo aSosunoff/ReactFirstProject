@@ -2,9 +2,7 @@ import axios from "../../utils/axios";
 import {
 	QUIZE_CREATOR_ERROR,
 	QUIZE_CREATOR_RESET,
-	QUIZE_CREATOR_SET_RIGHT_ANSWER_ID,
 	QUIZE_CREATOR_ADD_QUESTION,
-	QUIZE_CREATOR_CHANGE,
 } from "./actionsTypes";
 
 export const QuizCreate = () => {
@@ -33,50 +31,9 @@ export const Reset = () => {
 	};
 };
 
-export const SetRightAnswerId = (id) => {
+export const AddQuestion = (questionItem) => {
 	return {
-		type: QUIZE_CREATOR_SET_RIGHT_ANSWER_ID,
-		id,
-	};
-};
-
-export const Change = (value, controlName) => {
-	return {
-		type: QUIZE_CREATOR_CHANGE,
-		value,
-		controlName,
-	};
-};
-
-export const AddQuestion = () => {
-	return (dispatch, getStore) => {
-		const store = getStore().quizCreator;
-
-		const {
-			question,
-			option1,
-			option2,
-			option3,
-			option4,
-		} = store.formControls;
-
-		const questionItem = {
-			question: question.value,
-			id: store.quiz.length + 1,
-			rightAnswerId: store.rightAnswerId,
-			answers: [
-				{ text: option1.value, value: option1.id },
-				{ text: option2.value, value: option2.id },
-				{ text: option3.value, value: option3.id },
-				{ text: option4.value, value: option4.id },
-			],
-		};
-
-		dispatch(Reset());
-
-		dispatch({
-			type: QUIZE_CREATOR_ADD_QUESTION,
-			quiz: [...store.quiz, questionItem],
-		});
-	};
+		type: QUIZE_CREATOR_ADD_QUESTION,
+		questionItem,
+	}
 };

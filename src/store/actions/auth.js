@@ -3,6 +3,7 @@ import {
 	QUIZE_AUTH_START,
 	QUIZE_AUTH_ERROR,
 	QUIZE_AUTH_SUCCESS,
+	QUIZE_AUTH_LOGOUT,
 } from "./actionsTypes";
 
 export const Login = (email, password) => {
@@ -15,9 +16,10 @@ export const Login = (email, password) => {
 				password,
 			});
 
-			console.log(auth);
+			/* localStorage.setItem('expires', auth.expires); */
 
-			dispatch(Success());
+			dispatch(Success(true));
+			dispatch(autoLogout(auth.originalMaxAge));
 		} catch (error) {
 			dispatch(Error(error));
 		}
@@ -34,14 +36,30 @@ export const Register = (email, password) => {
 				password,
 			});
 
-			console.log(reg);
+			/* localStorage.setItem('expires', reg.expires); */
 
-			dispatch(Success());
+			dispatch(Success(true));
+			dispatch(autoLogout(reg.originalMaxAge));
 		} catch (error) {
 			dispatch(Error(error));
 		}
 	};
 };
+
+export const logout = () => {
+	/* localStorage.removeItem('expires'); */
+	return {
+		type: QUIZE_AUTH_LOGOUT,
+	}
+}
+
+export const autoLogout = (originalMaxAge) => {
+	return dispatch => {
+		setTimeout(() => {
+			dispatch(logout());
+		}, originalMaxAge);
+	}
+}
 
 export const Start = () => {
 	return {
@@ -49,9 +67,10 @@ export const Start = () => {
 	};
 };
 
-export const Success = () => {
+export const Success = (authenticated) => {
 	return {
 		type: QUIZE_AUTH_SUCCESS,
+		authenticated
 	};
 };
 

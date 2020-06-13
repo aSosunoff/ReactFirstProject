@@ -7,8 +7,9 @@ import {
 	validateForm,
 	setControl,
 } from "../../form/formFramework";
-import axios from "../../utils/axios";
 import Loader from "../../components/UI/loader";
+import { connect } from "react-redux";
+import { Login, Register } from "../../store/actions/auth";
 
 const createFormControls = () => ({
 	email: createControl(
@@ -35,57 +36,35 @@ const createFormControls = () => ({
 	),
 });
 
-export default class extends React.Component {
+class Auth extends React.Component {
 	state = {
 		isFormValid: false,
-		loading: false,
 		formControls: createFormControls(),
 	};
 
-	loginHandler = async () => {
-		try {
-			this.setState({ loading: true });
+	loginHandler = () => {
+		this.props.Login(
+			this.state.formControls.email.value,
+			this.state.formControls.password.value
+		);
 
-			await axios.post("/auth/login", {
-				email: this.state.formControls.email.value,
-				password: this.state.formControls.password.value,
-			});
-
-			this.setState({
-				isFormValid: false,
-				loading: false,
-				formControls: createFormControls(),
-			});
-		} catch (e) {
-			console.log(e.response.data);
-			this.setState({ loading: false });
-		}
+		this.setState({
+			isFormValid: false,
+			formControls: createFormControls(),
+		});
 	};
 
-	registerHandler = async () => {
-		try {
-			this.setState({
-				loading: true,
-			});
+	registerHandler = () => {
+		this.props.Register(
+			this.state.formControls.email.value,
+			this.state.formControls.password.value
+		);
 
-			await axios.post("/auth/register", {
-				email: this.state.formControls.email.value,
-				password: this.state.formControls.password.value,
-			});
-
-			this.setState({
-				isFormValid: false,
-				loading: false,
-				formControls: createFormControls(),
-			});
-		} catch (e) {
-			console.log(e.response.data);
-		}
+		this.setState({
+			isFormValid: false,
+			formControls: createFormControls(),
+		});
 	};
-
-	/* submitHandler = (event) => {
-		event.preventDafault();
-	}; */
 
 	onChangeHandler = (value, controlName) => {
 		const formControls = {
@@ -133,7 +112,7 @@ export default class extends React.Component {
 			<div className={classes.auth}>
 				<div>
 					<h1>Авторизация</h1>
-					{this.state.loading ? (
+					{this.props.loading ? (
 						<Loader />
 					) : (
 						<div className={classes.authForm}>
@@ -160,3 +139,18 @@ export default class extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = (state) => {
+	return {
+		loading: state.auth.loading,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		Login: (email, password) => dispatch(Login(email, password)),
+		Register: (email, password) => dispatch(Register(email, password)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

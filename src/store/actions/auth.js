@@ -10,10 +10,12 @@ export const Login = (email, password) => {
 		try {
 			dispatch(Start());
 
-			await axios.post("/auth/login", {
+			const { data: auth } = await axios.post("/auth/login", {
 				email,
 				password,
 			});
+
+			console.log(auth);
 
 			dispatch(Success());
 		} catch (error) {
@@ -27,10 +29,12 @@ export const Register = (email, password) => {
 		try {
 			dispatch(Start());
 
-			await axios.post("/auth/register", {
+			const { data: reg } = await axios.post("/auth/register", {
 				email,
 				password,
 			});
+
+			console.log(reg);
 
 			dispatch(Success());
 		} catch (error) {

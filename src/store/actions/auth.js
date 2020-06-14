@@ -16,9 +16,9 @@ export const Login = (email, password) => {
 				password,
 			});
 
-			/* localStorage.setItem('expires', auth.expires); */
+			localStorage.setItem("expires", auth.expires);
 
-			dispatch(Success(true));
+			dispatch(Success());
 			dispatch(autoLogout(auth.originalMaxAge));
 		} catch (error) {
 			dispatch(Error(error));
@@ -36,9 +36,9 @@ export const Register = (email, password) => {
 				password,
 			});
 
-			/* localStorage.setItem('expires', reg.expires); */
+			localStorage.setItem("expires", reg.expires);
 
-			dispatch(Success(true));
+			dispatch(Success());
 			dispatch(autoLogout(reg.originalMaxAge));
 		} catch (error) {
 			dispatch(Error(error));
@@ -47,19 +47,39 @@ export const Register = (email, password) => {
 };
 
 export const logout = () => {
-	/* localStorage.removeItem('expires'); */
-	return {
-		type: QUIZE_AUTH_LOGOUT,
-	}
-}
+	localStorage.removeItem("expires");
+	return async (dispatch) => {
+		await axios.post("/auth/logout");
+
+		dispatch({
+			type: QUIZE_AUTH_LOGOUT,
+		});
+	};
+};
 
 export const autoLogout = (originalMaxAge) => {
-	return dispatch => {
+	return (dispatch) => {
 		setTimeout(() => {
 			dispatch(logout());
 		}, originalMaxAge);
-	}
-}
+	};
+};
+
+export const autoLogin = () => {
+	return (dispatch, getStore) => {
+		const store = getStore().auth;
+		const expires = new Date(localStorage.getItem("expires"));
+		const currentDate = new Date();
+
+		if (!expires || expires.getTime() < currentDate.getTime()) {
+			if (store.isAuthenticated) dispatch(logout());
+			return;
+		}
+
+		dispatch(Success());
+		dispatch(autoLogout(expires.getTime() - currentDate.getTime()));
+	};
+};
 
 export const Start = () => {
 	return {
@@ -67,10 +87,9 @@ export const Start = () => {
 	};
 };
 
-export const Success = (authenticated) => {
+export const Success = () => {
 	return {
 		type: QUIZE_AUTH_SUCCESS,
-		authenticated
 	};
 };
 

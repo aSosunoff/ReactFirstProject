@@ -7,7 +7,7 @@ import {
 
 const initialState = {
 	loading: false,
-	authenticated: false,
+	isAuthenticated: false,
 };
 
 export default (state = initialState, action) => {
@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
 		case QUIZE_AUTH_SUCCESS:
 			return {
 				...state,
-				authenticated: action.authenticated,
+				isAuthenticated: true,
 				loading: false,
 			};
 		case QUIZE_AUTH_ERROR:
@@ -32,7 +32,8 @@ export default (state = initialState, action) => {
 		case QUIZE_AUTH_LOGOUT:
 			return {
 				...state,
-				authenticated: false,
+				isAuthenticated: false,
+				loading: false,
 			};
 		default:
 			return state;

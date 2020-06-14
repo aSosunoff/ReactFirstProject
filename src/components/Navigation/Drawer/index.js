@@ -4,26 +4,8 @@ import MenuToggle from "../MenuToggle";
 import Backdrop from "../../UI/Backdrop";
 import { NavLink } from "react-router-dom";
 
-const links = [
-	{
-		to: "/",
-		label: "Список",
-		exact: true,
-	},
-	{
-		to: "/auth",
-		label: "Авторизация",
-		exact: false,
-	},
-	{
-		to: "/quiz-creator",
-		label: "Создать тест",
-		exact: false,
-	},
-];
-
 export default class extends React.Component {
-	renderLinks() {
+	renderLinks(links) {
 		return links.map(({ to, exact, label }, inx) => {
 			return (
 				<li key={inx}>
@@ -39,12 +21,45 @@ export default class extends React.Component {
 			);
 		});
 	}
-
+	
 	render() {
 		const cls = [classes.drawer];
 
 		if (!this.props.isOpen) {
 			cls.push(classes.close);
+		}
+
+		let links = [
+			{
+				to: "/",
+				label: "Список",
+				exact: true,
+			},
+		];
+
+		if (this.props.isAuthenticated) {
+			links = [
+				...links,
+				{
+					to: "/quiz-creator",
+					label: "Создать тест",
+					exact: false,
+				},
+				{
+					to: "/logout",
+					label: "Выход",
+					exact: false,
+				},
+			];
+		} else {
+			links = [
+				...links,
+				{
+					to: "/auth",
+					label: "Авторизация",
+					exact: false,
+				},
+			];
 		}
 
 		return (
@@ -54,7 +69,7 @@ export default class extends React.Component {
 				<MenuToggle isOpen={this.props.isOpen} onToggle={this.props.onToggle} />
 
 				<nav className={cls.join(" ")}>
-					<ul>{this.renderLinks()}</ul>
+					<ul>{this.renderLinks(links)}</ul>
 				</nav>
 			</>
 		);
